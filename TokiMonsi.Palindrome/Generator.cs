@@ -28,8 +28,8 @@ public class Generator
 			{
 				var extensions = fragment.Offset switch
 				{
-					< 0 => GetWordsForPrepending(fragment.LooseEnd.ToString()).Select(fragment.Prepend),
-					>= 0 => GetWordsForAppending(fragment.LooseBeginning.ToString()).Select(fragment.Append),
+					< 0 => GetWordsForPrepending(fragment.LooseEnd).Select(fragment.Prepend),
+					>= 0 => GetWordsForAppending(fragment.LooseBeginning).Select(fragment.Append),
 				};
 				
 				foreach(var extension in extensions)

@@ -6,23 +6,23 @@ record Fragment(IImmutableList<string> Words, int Offset)
 
 	public string Phrase => string.Join(' ', Words);
 
-	public ReadOnlySpan<char> LooseEnd
+	public string LooseEnd
 	{
 		get
 		{
 			Debug.Assert(Offset < 0);
 			var lastWord = Words[^1];
-			return lastWord.AsSpan(lastWord.Length + Offset);
+			return lastWord[^-Offset..];
 		}
 	}
 
-	public ReadOnlySpan<char> LooseBeginning
+	public string LooseBeginning
 	{
 		get
 		{
 			Debug.Assert(Offset >= 0);
 			var firstWord = Words[0];
-			return firstWord.AsSpan(0, Offset);
+			return firstWord[..Offset];
 		}
 	}
 
@@ -32,8 +32,8 @@ record Fragment(IImmutableList<string> Words, int Offset)
 		Debug.Assert(-length <= offset && offset < length);
 
 		var matchingPart = offset < 0
-			? word.AsSpan(0, length + offset)
-			: word.AsSpan(offset);
+			? word[..^-offset]
+			: word[offset..];
 
 		return matchingPart.EqualsReversed(matchingPart)
 			? new Fragment(ImmutableList.Create(word), offset)

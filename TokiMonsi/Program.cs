@@ -4,7 +4,7 @@ static class Program
 {
 	static void Main()
 	{
-		var maxWordCount = 8;
+		var maxWordCount = 9;
 		var wordList = Words.PuWords;
 
 		var generator = new Generator();
