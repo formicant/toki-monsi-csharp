@@ -1,26 +1,16 @@
 ﻿namespace TokiMonsi.Palindrome;
 
-class Fragment
+record Fragment(IImmutableList<string> Words, int Offset)
 {
-	Fragment(IImmutableList<string> words, int offset) =>
-		(Words, Offset) = (words, offset);
-
-	IImmutableList<string> Words { get; init; }
-	int Offset { get; init; }
-
-	public int Length => Words.Count;
-
 	public bool IsComplete => Offset == 0;
-	public bool CanPrepend => Offset < 0;
-	public bool CanAppend => Offset >= 0;
 
-	public string GetPhrase => string.Join(' ', Words);
+	public string Phrase => string.Join(' ', Words);
 
 	public ReadOnlySpan<char> LooseEnd
 	{
 		get
 		{
-			Debug.Assert(CanPrepend);
+			Debug.Assert(Offset < 0);
 			var lastWord = Words[^1];
 			return lastWord.AsSpan(lastWord.Length + Offset);
 		}
@@ -30,7 +20,7 @@ class Fragment
 	{
 		get
 		{
-			Debug.Assert(CanAppend);
+			Debug.Assert(Offset >= 0);
 			var firstWord = Words[0];
 			return firstWord.AsSpan(0, Offset);
 		}
@@ -52,7 +42,7 @@ class Fragment
 
 	public Fragment Prepend(string word)
 	{
-		Debug.Assert(CanPrepend);
+		Debug.Assert(Offset < 0);
 		Debug.Assert(LooseEnd.EqualsReversed(word));
 
 		return new Fragment(
@@ -62,7 +52,7 @@ class Fragment
 
 	public Fragment Append(string word)
 	{
-		Debug.Assert(CanAppend);
+		Debug.Assert(Offset >= 0);
 		Debug.Assert(word.EqualsReversed(LooseBeginning));
 
 		return new Fragment(
