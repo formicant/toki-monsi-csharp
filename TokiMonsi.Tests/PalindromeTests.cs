@@ -10,7 +10,7 @@ public class PalindromeTests
 	{
 		var generator = new Generator();
 		var actual = generator.GeneratePalindromes(wordList, maxWordCount);
-		var expected = GeneratePalindromesNaïvely(wordList, maxWordCount);
+		var expected = GeneratePalindromesNaÃ¯vely(wordList, maxWordCount);
 		Assert.That(actual, Is.EquivalentTo(expected));
 	}
 
@@ -24,7 +24,7 @@ public class PalindromeTests
 		Assert.That(actual, Is.EquivalentTo(expected));
 	}
 
-	static IReadOnlyList<string> GeneratePalindromesNaïvely(IReadOnlyList<string> wordList, int maxWordCount) =>
+	static IReadOnlyList<string> GeneratePalindromesNaÃ¯vely(IReadOnlyList<string> wordList, int maxWordCount) =>
 		(
 			from wordCount in Enumerable.Range(1, maxWordCount)
 			from wordCombination in wordList.CartesianProduct(wordCount)
