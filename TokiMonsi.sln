@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokiMonsi", "TokiMonsi\TokiMonsi.csproj", "{29D5C693-79AF-4ECB-9DF2-C5F3DFFCAB02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokiMonsi.Palindrome", "TokiMonsi.Palindrome\TokiMonsi.Palindrome.csproj", "{61816907-E6EC-4919-8AA1-C41A72B9ADEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokiMonsi.Palindrome", "TokiMonsi.Palindrome\TokiMonsi.Palindrome.csproj", "{61816907-E6EC-4919-8AA1-C41A72B9ADEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokiMonsi.Tests", "TokiMonsi.Tests\TokiMonsi.Tests.csproj", "{89A64888-46A8-4B49-87D3-B7E8594199D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{61816907-E6EC-4919-8AA1-C41A72B9ADEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61816907-E6EC-4919-8AA1-C41A72B9ADEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61816907-E6EC-4919-8AA1-C41A72B9ADEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
