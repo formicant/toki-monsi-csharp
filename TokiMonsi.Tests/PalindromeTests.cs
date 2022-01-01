@@ -24,6 +24,8 @@ public class PalindromeTests
 		Assert.That(actual, Is.EquivalentTo(expected));
 	}
 
+	#region Helper functions
+
 	static IReadOnlyList<string> GeneratePalindromesNaïvely(IReadOnlyList<string> wordList, int maxWordCount) =>
 		(
 			from wordCount in Enumerable.Range(1, maxWordCount)
@@ -34,4 +36,6 @@ public class PalindromeTests
 
 	static bool IsPalindrome(string s) =>
 		s.Equals(new string(s.Reverse().ToArray()), StringComparison.InvariantCultureIgnoreCase);
+
+	#endregion
 }

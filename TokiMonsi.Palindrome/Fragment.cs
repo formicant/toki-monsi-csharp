@@ -28,8 +28,7 @@ record Fragment(IImmutableList<string> Words, int Offset)
 
 	public static Fragment? FromSingleWord(string word, int offset)
 	{
-		var length = word.Length;
-		Debug.Assert(-length <= offset && offset < length);
+		Debug.Assert(-word.Length <= offset && offset < word.Length);
 
 		var matchingPart = offset < 0
 			? word[..^-offset]
