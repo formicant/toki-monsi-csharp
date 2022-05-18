@@ -1,5 +1,9 @@
 ﻿namespace TokiMonsi;
 
+using System.Diagnostics;
+using static System.Console;
+using TokiMonsi.Palindrome;
+
 static class Program
 {
 	static void Main()
@@ -7,11 +11,11 @@ static class Program
 		var maxWordCount = 9;
 		var wordList = Words.PuWords;
 
-		var generator = new Generator();
+		var generator = new PalindromesGenerator(wordList);
 
 		var sw = new Stopwatch();
 		sw.Start();
-		var palindromes = generator.GeneratePalindromes(wordList, maxWordCount);
+		var palindromes = generator.GeneratePalindromes(maxWordCount);
 		sw.Stop();
 		var elapsed = sw.Elapsed.TotalSeconds;
 

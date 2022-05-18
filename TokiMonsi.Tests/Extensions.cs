@@ -15,4 +15,16 @@ static class Extensions
 
 	public static IEnumerable<IEnumerable<T>> CartesianProduct<T>(this IEnumerable<T> sequence, int dimensions) =>
 		Enumerable.Range(0, dimensions).Select(_ => sequence).CartesianProduct();
+
+	public static TailNode? ParseNode(this string? notation)
+	{
+		if (notation is null)
+			return null;
+		var length = notation.Length - 1;
+		if (notation.StartsWith('-'))
+			return new TailNode(notation[1..], -length);
+		if (notation.EndsWith('-'))
+			return new TailNode(notation[..length], length);
+		throw new ArgumentException("Incorrect node notaion", nameof(notation));
+	}
 }

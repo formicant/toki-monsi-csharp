@@ -1,6 +1,3 @@
-using NUnit.Framework;
-using TokiMonsi.Palindrome;
-
 namespace TokiMonsi.Tests;
 
 public class PalindromeTests
@@ -8,8 +5,8 @@ public class PalindromeTests
 	[TestCase(new[] { "a", "ala", "alasa", "kala", "la", "pu" }, 7)]
 	public void TestGeneratePalindromes(IReadOnlyList<string> wordList, int maxWordCount)
 	{
-		var generator = new Generator();
-		var actual = generator.GeneratePalindromes(wordList, maxWordCount);
+		var generator = new PalindromesGenerator(wordList);
+		var actual = generator.GeneratePalindromes(maxWordCount);
 		var expected = GeneratePalindromesNaïvely(wordList, maxWordCount);
 		Assert.That(actual, Is.EquivalentTo(expected));
 	}
@@ -19,8 +16,8 @@ public class PalindromeTests
 	{
 		var casedWordList = new[] { "ala", "Ala", "kALa" };
 		var expected = new[] { "ala", "Ala", "ala ala", "ala Ala", "Ala ala", "Ala Ala", "ala kALa", "Ala kALa" };
-		var generator = new Generator();
-		var actual = generator.GeneratePalindromes(casedWordList, 2);
+		var generator = new PalindromesGenerator(casedWordList);
+		var actual = generator.GeneratePalindromes(2);
 		Assert.That(actual, Is.EquivalentTo(expected));
 	}
 
