@@ -9,93 +9,147 @@
 /// </summary>
 class Graph
 {
-	/// <summary>Start node.</summary>
-	public StartNode StartNode { get; } = new();
+	/// <summary>Start edges.</summary>
+	public IReadOnlyList<StartEdge> StartEdges { get; }
 
 	/// <summary>Edges grouped by their from-nodes.</summary>
-	public IReadOnlyDictionary<INode, IReadOnlySet<Edge>> EdgesFromNode { get; }
+	public ILookup<Node, Edge> EdgesFromNode { get; }
 
 	/// <summary>Distance from every node to the final node.</summary>
-	public IReadOnlyDictionary<INode, int> Distances { get; }
+	public IReadOnlyDictionary<Node, int> Distances { get; }
 
 	public Graph(IReadOnlyList<string> wordList)
 	{
-		var edgesToNode = GetEdges(wordList)
-			.GroupBy(edge => edge.ToNode)
-			.ToDictionary(g => g.Key, g => g.AsEnumerable());
+		var startEdges = GetStartEdges(wordList).ToList();
+		var edges = GetEdges(startEdges, wordList).ToList();
 
-		Distances = GetDistances(edgesToNode);
+		Distances = CalculateDistances(edges);
+
+		// Leave only useful start edges
+		StartEdges = startEdges
+			.Where(edge => Distances.ContainsKey(edge.ToNode))
+			.ToList();
 
 		// Group edges by from-node leaving only useful ones
-		EdgesFromNode = edgesToNode
-			.Where(p => Distances.ContainsKey(p.Key))
-			.SelectMany(p => p.Value)
-			.GroupBy(edge => edge.FromNode)
-			.ToDictionary(g => g.Key, g => g.ToHashSet() as IReadOnlySet<Edge>);
+		EdgesFromNode = edges
+			.Where(edge => Distances.ContainsKey(edge.ToNode))
+			.ToLookup(edge => edge.FromNode);
 	}
 
+	static IEnumerable<StartEdge> GetStartEdges(IReadOnlyList<string> wordList) =>
+		from word in wordList
+		let caselessWord = word.ToLowerInvariant()
+		from offset in Enumerable.Range(-caselessWord.Length, 2 * caselessWord.Length)
+		let toNode = TryCreateStartNode(caselessWord, offset)
+		where toNode is not null
+		select new StartEdge(word, toNode.Value);
 
-	/// <summary>
-	/// Returns all graph edges.
-	/// </summary>
-	static IEnumerable<Edge> GetEdges(IReadOnlyList<string> wordList)
+	static IEnumerable<Edge> GetEdges(IEnumerable<StartEdge> startEdges, IReadOnlyList<string> wordList)
 	{
-		var tailNodes = new HashSet<TailNode>();
-		var edgesToNode = new Dictionary<TailNode, HashSet<Edge>>();
+		var nodes = startEdges
+			.Select(edge => edge.ToNode)
+			.ToHashSet();
 
-		// Add start edges
-		foreach (var word in wordList)
+		var queue = new Queue<Node>(nodes);
+		while (queue.Count > 0)
 		{
-			var length = word.ToLowerInvariant().Length;
-
-			foreach (var offset in Enumerable.Range(-length, 2 * length))
+			var fromNode = queue.Dequeue();
+			foreach (var word in wordList)
 			{
-				var (node, possible_edge) = Edge.TryStart(word, offset);
-				tailNodes.Add(node);
+				var caselessWord = word.ToLowerInvariant();
 
-				// A node is accessible from start if the word's matching part is palindromic
-				if (possible_edge is Edge edge)
-					yield return edge;
+				if (TryCreateNode(fromNode, caselessWord) is Node toNode)
+				{
+					yield return new Edge(fromNode, word, toNode);
+
+					if (!nodes.Contains(toNode))
+					{
+						nodes.Add(toNode);
+						queue.Enqueue(toNode);
+					}
+				}
 			}
 		}
-
-		// Add other edges
-		var possible_edges =
-			from fromNode in tailNodes
-			from word in wordList
-			select Edge.TryCreate(fromNode, word);
-		var edges = possible_edges.OfType<Edge>();
-
-		foreach (var edge in edges)
-			yield return edge;
 	}
 
 	/// <summary>
 	/// Finds distance from every node to the final node.
 	/// </summary>
-	static IReadOnlyDictionary<INode, int> GetDistances(IReadOnlyDictionary<TailNode, IEnumerable<Edge>> edgesToNode)
+	static IReadOnlyDictionary<Node, int> CalculateDistances(IEnumerable<Edge> edges)
 	{
-		var finalNode = new TailNode("", 0);
-		var distances = new Dictionary<INode, int> { [finalNode] = 0 };
+		var fromNodesByToNode = edges
+			.ToLookup(edge => edge.ToNode, edge => edge.FromNode);
 
-		var queue = new PriorityQueue<TailNode, int>();
+		var finalNode = new Node("", 0);
+		var distances = new Dictionary<Node, int> { [finalNode] = 0 };
+		
+		var queue = new PriorityQueue<Node, int>();
 		queue.Enqueue(finalNode, 0);
 
 		while (queue.Count > 0)
 		{
-			var node = queue.Dequeue();
-			var fromNodeDistance = distances[node] + 1;
+			var toNode = queue.Dequeue();
+			var fromNodeDistance = distances[toNode] + 1;
 
-			if (edgesToNode.TryGetValue(node, out var edges))
-				foreach (var edge in edges)
-					if (!distances.TryGetValue(edge.FromNode, out var distance) || distance > fromNodeDistance)
-					{
-						distances[edge.FromNode] = fromNodeDistance;
-						if (edge.FromNode is TailNode fromNode)
-							queue.Enqueue(fromNode, fromNodeDistance);
-					}
+			foreach (var fromNode in fromNodesByToNode[toNode])
+				if (!distances.TryGetValue(fromNode, out int distance) || distance > fromNodeDistance)
+				{
+					distances[fromNode] = fromNodeDistance;
+					queue.Enqueue(fromNode, fromNodeDistance);
+				}
 		}
 
 		return distances;
 	}
+
+	/// <summary>
+	/// Creates a node if it is accessible form start by <paramref name="word" /> and <paramref name="offset" />
+	/// or returns <c>null</c> if impossible.
+	/// </summary>
+	public static Node? TryCreateStartNode(string caselessWord, int offset)
+	{
+		var (matchingPart, tail) = SliceByOffset(caselessWord, offset);
+
+		// A node is accessible from start if the word's matching part is palindromic
+		return AreEqualReversed(matchingPart, matchingPart)
+			? new Node(tail, offset)
+			: null;
+	}
+
+	/// <summary>
+	/// Creates a node if it is accessible form <paramref name="fromNode"/> by <paramref name="word" />
+	/// or returns <c>null</c> if impossible.
+	/// </summary>
+	public static Node? TryCreateNode(Node fromNode, string caselessWord)
+	{
+		var toNodeOffset = fromNode.Offset - Sign(fromNode.Offset) * caselessWord.Length;
+		var wordOffset = -Sign(toNodeOffset) * caselessWord.Length;
+
+		if (Sign(fromNode.Offset) == Sign(toNodeOffset))
+		{
+			var (toNodeTail, tailMatchingPart) = SliceByOffset(fromNode.Tail, wordOffset);
+			return AreEqualReversed(tailMatchingPart, caselessWord)
+				? new Node(toNodeTail, toNodeOffset)
+				: null;
+		}
+		else
+		{
+			var (toNodeTail, wordMatchingPart) = SliceByOffset(caselessWord, fromNode.Offset);
+			return AreEqualReversed(fromNode.Tail, wordMatchingPart)
+				? new Node(toNodeTail, toNodeOffset)
+				: null;
+		}
+	}
+
+	static (string, string) SliceByOffset(string word, int offset) =>
+		offset >= 0
+			? (word[offset..], word[..offset])
+			: (word[..(word.Length + offset)], word[(word.Length + offset)..]);
+
+	static bool AreEqualReversed(string forward, string backward) =>
+		Enumerable.Zip(forward, backward.Reverse())
+			.All(t => t.First == t.Second);
+
+	static int Sign(int offset) =>
+		offset >= 0 ? 1 : -1;
 }

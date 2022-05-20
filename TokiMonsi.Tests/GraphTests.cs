@@ -1,6 +1,6 @@
 ﻿namespace TokiMonsi.Tests;
 
-public class EdgeTests
+public class GraphTests
 {
     [TestCase("-",     "en",    "-en" )]
     [TestCase("oli-",  "ilo",   "-"   )]
@@ -13,11 +13,10 @@ public class EdgeTests
     [TestCase("-eli",  "wile",  "w-"  )]
     [TestCase("a-",    "e",     null  )]
     [TestCase("-wa",   "awen",  null  )]
-    public void TestTryCreate(string from, string word, string? expectedTo)
+    public void TestTryCreateNode(string from, string word, string? expectedTo)
     {
         var fromNode = from.ParseNode()!.Value;
-        var edge = Edge.TryCreate(fromNode, word);
-        var actualToNode = edge?.ToNode;
+        var actualToNode = Graph.TryCreateNode(fromNode, word.ToLowerInvariant());
         var expectedToNode = expectedTo.ParseNode();
         Assert.That(actualToNode, Is.EqualTo(expectedToNode));
     }
