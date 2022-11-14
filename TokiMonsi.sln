@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.32014.148
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokiMonsi", "TokiMonsi\TokiMonsi.csproj", "{29D5C693-79AF-4ECB-9DF2-C5F3DFFCAB02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokiMonsi", "TokiMonsi\TokiMonsi.csproj", "{6DB15AB3-4453-4808-9AF9-7CDF3B6047F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokiMonsi.Palindrome", "TokiMonsi.Palindrome\TokiMonsi.Palindrome.csproj", "{61816907-E6EC-4919-8AA1-C41A72B9ADEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokiMonsi.Palindrome", "TokiMonsi.Palindrome\TokiMonsi.Palindrome.csproj", "{D72B1504-825D-4D9B-933C-7011F4FFA33F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokiMonsi.Tests", "TokiMonsi.Tests\TokiMonsi.Tests.csproj", "{89A64888-46A8-4B49-87D3-B7E8594199D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokiMonsi.Tests", "TokiMonsi.Tests\TokiMonsi.Tests.csproj", "{9EB373C2-4C4E-4904-8534-6F7DF0E9B6F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{29D5C693-79AF-4ECB-9DF2-C5F3DFFCAB02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29D5C693-79AF-4ECB-9DF2-C5F3DFFCAB02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29D5C693-79AF-4ECB-9DF2-C5F3DFFCAB02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29D5C693-79AF-4ECB-9DF2-C5F3DFFCAB02}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61816907-E6EC-4919-8AA1-C41A72B9ADEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61816907-E6EC-4919-8AA1-C41A72B9ADEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61816907-E6EC-4919-8AA1-C41A72B9ADEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61816907-E6EC-4919-8AA1-C41A72B9ADEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89A64888-46A8-4B49-87D3-B7E8594199D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DB15AB3-4453-4808-9AF9-7CDF3B6047F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DB15AB3-4453-4808-9AF9-7CDF3B6047F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DB15AB3-4453-4808-9AF9-7CDF3B6047F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DB15AB3-4453-4808-9AF9-7CDF3B6047F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72B1504-825D-4D9B-933C-7011F4FFA33F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72B1504-825D-4D9B-933C-7011F4FFA33F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72B1504-825D-4D9B-933C-7011F4FFA33F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72B1504-825D-4D9B-933C-7011F4FFA33F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB373C2-4C4E-4904-8534-6F7DF0E9B6F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB373C2-4C4E-4904-8534-6F7DF0E9B6F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB373C2-4C4E-4904-8534-6F7DF0E9B6F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB373C2-4C4E-4904-8534-6F7DF0E9B6F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7B9CE00A-4E18-4539-B05E-20E6C5903E64}
+		SolutionGuid = {ABF6939D-171F-4733-BE71-FF5DCED6D256}
 	EndGlobalSection
 EndGlobal
